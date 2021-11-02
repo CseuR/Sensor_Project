@@ -1,6 +1,5 @@
 package com.example.sensorproject
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.hardware.Sensor
@@ -10,9 +9,7 @@ import android.hardware.SensorManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import com.example.sensorproject.databinding.ActivityMainBinding
-import android.widget.RelativeLayout
 
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
@@ -21,6 +18,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var bindig: ActivityMainBinding
     private lateinit var sensorManager: SensorManager
     var state = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +78,9 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             {
                 when(state){
                     0 -> {
+                        val openURL = Intent(Intent.ACTION_VIEW)
+                        openURL.data = Uri.parse("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+                        startActivity(openURL)
 
                     }
                     1 -> {
