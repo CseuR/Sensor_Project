@@ -1,20 +1,25 @@
 package com.example.sensorproject
 
-import android.app.Activity
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import com.example.sensorproject.databinding.ActivityMainBinding
+import android.widget.RelativeLayout
+
 
 class MainActivity : AppCompatActivity(), SensorEventListener {
 
 
     private lateinit var bindig: ActivityMainBinding
     private lateinit var sensorManager: SensorManager
-
     var state = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,9 +64,36 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                         bindig.ZippoState.setImageResource(R.drawable.closedzippo)
                         state = 0
                     }
+                    2 -> {
+                        bindig.ZippoState.setImageResource(R.drawable.closedzippo)
+                        state = 0
+                    }
                 }
             }
 
+
+        }
+
+        if(event?.sensor?.type == Sensor.TYPE_LIGHT)
+        {
+            if(event.values[0] < 2)
+            {
+                when(state){
+                    0 -> {
+
+                    }
+                    1 -> {
+                        bindig.ZippoState.setImageResource(R.drawable.zippofire)
+                        bindig.root.setBackgroundColor(Color.BLACK)
+                        state = 2;
+                    }
+                }
+            }
+            if(event.values[0] > 2 && state==2) {
+                bindig.ZippoState.setImageResource(R.drawable.openzippo)
+                bindig.root.setBackgroundColor(Color.WHITE)
+                state=1
+            }
 
         }
 
