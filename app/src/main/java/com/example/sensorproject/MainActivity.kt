@@ -13,6 +13,7 @@ import android.net.Uri
 import android.os.BatteryManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.TextView
 import com.example.sensorproject.databinding.ActivityMainBinding
 
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
         batteryPerc = findViewById(R.id.batteryStat)
         registerReceiver(this.mBatteryInfoReciever, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
 
-
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         SetupAcc()
         SetupLight()
@@ -89,8 +90,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                     }
                 }
             }
-
-
         }
 
         if(event?.sensor?.type == Sensor.TYPE_LIGHT)
@@ -106,6 +105,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
                     }
                     1 -> {
                         bindig.ZippoState.setImageResource(R.drawable.zippofire)
+                        batteryPerc!!.setTextColor(Color.WHITE)
                         bindig.root.setBackgroundColor(Color.BLACK)
                         state = 2;
                     }
@@ -114,12 +114,10 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             if(event.values[0] > 2 && state==2) {
                 bindig.ZippoState.setImageResource(R.drawable.openzippo)
                 bindig.root.setBackgroundColor(Color.WHITE)
+                batteryPerc!!.setTextColor(Color.BLACK)
                 state=1
             }
-
         }
-
-
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
