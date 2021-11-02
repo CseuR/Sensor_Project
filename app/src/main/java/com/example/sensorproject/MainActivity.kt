@@ -1,14 +1,19 @@
 package com.example.sensorproject
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.net.Uri
+import android.os.BatteryManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.TextView
 import com.example.sensorproject.databinding.ActivityMainBinding
 
 
@@ -18,15 +23,31 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var bindig: ActivityMainBinding
     private lateinit var sensorManager: SensorManager
     var state = 0
-
+    var batteryPerc: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bindig = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bindig.root)
 
+        batteryPerc = findViewById(R.id.batteryStat)
+        registerReceiver(this.mBatteryInfoReciever, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+
+
+
         SetupAcc()
         SetupLight()
+    }
+    private val mBatteryInfoReciever: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val level = intent!!.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
+            val scale = intent!!.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
+
+            val percentage = level*100 / scale.toInt()
+
+            batteryPerc!!.text = "$percentage %"
+        }
+
     }
 
     private fun SetupAcc()
