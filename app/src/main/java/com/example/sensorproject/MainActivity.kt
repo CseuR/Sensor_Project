@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var bindig: ActivityMainBinding
     private lateinit var sensorManager: SensorManager
 
+    var state = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,13 +48,20 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent?) {
         if(event?.sensor?.type == Sensor.TYPE_ACCELEROMETER)
         {
-            //MIÉRT NEM MŰKÖDSZ?
+            if(event.values[0] > 10)
+            {
+                when(state){
+                    0 -> {
+                        bindig.ZippoState.setImageResource(R.drawable.openzippo)
+                        state = 1
+                    }
+                    1 ->{
+                        bindig.ZippoState.setImageResource(R.drawable.closedzippo)
+                        state = 0
+                    }
+                }
+            }
 
-        }
-
-
-        if(event?.sensor?.type == Sensor.TYPE_LIGHT)
-        {
 
         }
 
